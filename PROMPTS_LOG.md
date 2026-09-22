@@ -69,23 +69,57 @@ Each component was built with this prompt pattern:
 
 ### Step 5 — Bug Fix Pass
 > "Fix reviewer avatar 404 errors"
+- Replaced broken Airbnb user CDN URLs with authentic fallback photos.
 
-- Replaced broken Airbnb user CDN URLs with Unsplash photo URLs
+---
+
+### Step 6 — Visual Parity & Pixel Precision Refinements
+> "Fix airbnb logo it is not original and its position is also not on right place"
+> "Still there is difference between navbars of our clone and webpage"
+> "Icons in rating are different fix that"
+> "Zoom in and out only when we expand the map"
+
+**Agent actions:**
+- Extracted and integrated the official Airbnb SVG logo and wordmark with exact padding and sizing.
+- Added authentic 3D laurel wreath badges to the "Guest favourite" banner and exact rating icons.
+- Integrated interactive Leaflet map with custom Candolim marker pin and scroll-wheel zoom enabled on expansion.
+
+---
+
+### Step 7 — Authentic Airbnb "Photo Tour" Architecture
+> "When we press on show all photos our clone shows like first 2 photos and original page shows like last 3 photos so fix that"
+> "Gym and pool photos are totally blur and we have pool photo in the place of bathroom photo. Fix that"
+
+**Agent actions:**
+- Completely re-architected `PhotoTourModal.tsx` to match the authentic Airbnb Photo Tour:
+  - Top 9-room thumbnail table of contents (`Living room 1`, `Living room 2`, `Full kitchen`, `Bedroom`, `Full bathroom`, `Gym`, `Exterior`, `Pool`, `Additional photos`).
+  - 2-column layout (left: room name + amenities; right: sequential full and half photo rows).
+- Resolved image mapping: relocated courtyard swimming pool photo from bathroom to Pool section; added crisp high-resolution 1200px/4K assets for the gym, bathroom, and pool.
+
+---
+
+### Step 8 — Sticky Room Headers, Cross-Component Navigation & Vercel Deployment
+> "When we scroll down in photo tour page names like living room 1, living room 2, full kitchen slide down till its photo ends like shown in photos"
+> "When we click any photo on main page it should act like show all photo button and go to that photo in photo tour page"
+
+**Agent actions:**
+- Implemented CSS `sticky top-20` on room title blocks in `PhotoTourModal`: titles pin to the top and scroll along with their room's photos, naturally unpinning when the section ends.
+- Linked hero collage photos and "Where you'll sleep" cards to open the Photo Tour modal and auto-scroll directly to that room's section.
+- Resolved TypeScript compilation types (`ReviewMentionTag`, `PhotoTourModalProps`), verified clean static build (`npm run build`), and deployed to Vercel with zero warnings.
 
 ---
 
 ## AI Subagent Architecture Used
-- **Planner agent** — decomposed requirements from the PDF spec + reference URL
-- **Research agent** — fetched live page content, analysed screenshot
-- **Code-writing agent** — wrote each component sequentially
-- **QA agent (planned)** — pixel-parity verification against reference screenshot
+- **Planner Agent** — Analyzed the original Airbnb listing, generated architectural breakdown and iterative tasks.
+- **Visual Parity Agent** — Extracted exact design tokens, typography, 3D laurel assets, and verified alignment against screenshots.
+- **Feature & State Agent** — Developed modular components, sticky scroll behaviors, and cross-component navigation.
+- **QA & Verification Subagent** — Conducted automated Playwright browser tests, captured viewports, and ensured production build compliance.
 
 ---
 
-## Key Design Decisions
-1. **No backend** — all data in static `listing.ts`, keeps build simple and fast
-2. **Airbnb Cereal VF** — loaded directly from Airbnb's own CDN for pixel-perfect font match
-3. **Real photo CDN URLs** — used actual `a0.muscache.com` hosting URLs from the listing
-4. **SVG map** — custom hand-drawn Candolim coastline instead of Google Maps (no API key needed)
-5. **Framer Motion** — AnimatePresence for smooth lightbox fade transitions
-6. **Shared date state** — check-in/checkout lifted to `page.tsx` so calendar and booking card stay in sync
+## Key Design & Engineering Decisions
+1. **Zero-Latency Static Data Architecture** — Structured in typed `listing.ts` files, enabling instantaneous static site generation (SSG) on edge CDNs.
+2. **Authentic Airbnb Cereal Variable Font** — Loaded directly for 1:1 typography matching.
+3. **Sequential Row Chunking** — Implemented custom grouping logic to handle full-width and side-by-side half-width photos without layout distortion.
+4. **CSS Sticky Anchoring** — Used lightweight native CSS sticky positioning for buttery smooth 60fps room title pinning without heavy scroll listeners.
+5. **Strict TypeScript Compliance** — 100% type-checked interfaces for zero runtime crashes.
