@@ -3,11 +3,13 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, Share, Heart, Check } from "lucide-react";
+import { Photo } from "@/data/listing";
 
 interface PhotoTourModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectPhoto: (index: number) => void;
+  photos?: Photo[];
 }
 
 interface TourRoom {

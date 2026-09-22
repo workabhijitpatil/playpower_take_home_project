@@ -29,7 +29,7 @@ export interface ReviewMentionTag {
   emoji?: string;
   iconSrc?: string;
   label: string;
-  count: number;
+  count: number | string;
 }
 
 export interface Amenity {
