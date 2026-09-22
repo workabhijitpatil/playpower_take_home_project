@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
+/* ─── Airbnb Cereal Variable Font ──────────────────────────────── */
+@font-face {
+  font-family: "Airbnb Cereal VF";
+  src: url("https://a0.muscache.com/airbnb/static/airbnb-dls-web/build/fonts/cereal-variable/AirbnbCerealVF_W_Wght.8816d9e5c3b6a860636193e36b6ac4e4.woff2")
+      format("woff2 supports variations"),
+    url("https://a0.muscache.com/airbnb/static/airbnb-dls-web/build/fonts/cereal-variable/AirbnbCerealVF_W_Wght.8816d9e5c3b6a860636193e36b6ac4e4.woff2")
+      format("woff2-variations");
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Design Tokens ─────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-airbnb: "Airbnb Cereal VF", -apple-system, BlinkMacSystemFont,
+    Roboto, "Helvetica Neue", sans-serif;
+  --airbnb-coral: #ff385c;
+  --airbnb-dark: #222222;
+  --airbnb-gray: #6c6c6c;
+  --airbnb-light-gray: #f7f7f7;
+  --airbnb-border: #dddddd;
+  --airbnb-border-light: #ebebeb;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base Styles ───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #222222;
+  font-family: var(--font-airbnb);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ─── Primary Button — exact Airbnb gradient pill ──────────────── */
+/* linear-gradient(90deg,#e61e4d,#e31c5f,#d70466), radius 9999px   */
+.btn-airbnb {
+  background: linear-gradient(90deg, #e61e4d, #e31c5f, #d70466);
+  color: #ffffff;
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-airbnb:hover {
+  opacity: 0.9;
+}
+.btn-airbnb:active {
+  transform: scale(0.98);
+}
+
+/* ─── Secondary Button — #f2f2f2 bg, 12px radius ───────────────── */
+.btn-secondary {
+  background: #f2f2f2;
+  color: #222222;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 13px 24px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-secondary:hover {
+  background: #e8e8e8;
+}
+
+/* ─── Custom Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* ─── Calendar Date Range ───────────────────────────────────────── */
+.cal-in-range {
+  background-color: #f7f7f7;
+}
+.cal-start-end {
+  background-color: #222222;
+  color: #ffffff;
+  border-radius: 50%;
 }
