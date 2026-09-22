@@ -8,12 +8,14 @@ interface AboutSectionProps {
   description: string[];
   sleepingArrangements: Listing["sleepingArrangements"];
   translationNotice: boolean;
+  onOpenPhotoTour?: (roomId: string) => void;
 }
 
 export const AboutSection: React.FC<AboutSectionProps> = ({
   description,
   sleepingArrangements,
   translationNotice,
+  onOpenPhotoTour,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -23,50 +25,51 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       {translationNotice && (
         <div className="mb-6 p-4 bg-[#F7F7F7] rounded-xl flex items-center justify-between" style={{ fontSize: 14, color: "#222222" }}>
           <span>
+            {/* Translate with Google info */}
             Some info has been automatically translated.{" "}
-            <button className="font-semibold underline text-[#222222] hover:text-black">
+            <button className="underline font-semibold hover:text-black">
               Show original
             </button>
           </span>
         </div>
       )}
 
-      {/* Description — 16px/400 paragraphs */}
-      <div className="space-y-4 text-[#222222]" style={{ fontSize: 16, fontWeight: 400 }}>
-        <p style={{ lineHeight: "24px" }}>{description[0]}</p>
-
-        {expanded && (
-          <div className="space-y-4">
-            {description.slice(1).map((p, i) => (
-              <p key={i} className="whitespace-pre-line" style={{ lineHeight: "24px" }}>{p}</p>
-            ))}
-          </div>
-        )}
-
-        {/* "Show more" button */}
-        {description.length > 1 && (
-          <div>
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="btn-secondary mt-2 flex items-center gap-1.5"
-              style={{ fontSize: 15, padding: "10px 18px", borderRadius: 8 }}
-            >
-              <span>{expanded ? "Show less" : "Show more"}</span>
-              <span style={{ fontSize: 14 }}>›</span>
-            </button>
-          </div>
-        )}
+      {/* Description paragraphs */}
+      <div className="space-y-4 text-[#222222] leading-relaxed" style={{ fontSize: 16 }}>
+        {description.slice(0, expanded ? undefined : 2).map((p, i) => (
+          <p key={i} className="whitespace-pre-line">{p}</p>
+        ))}
       </div>
 
-      {/* Where you'll sleep */}
-      <div id="sleeping-section" className="mt-10 pt-8 border-t border-[#EBEBEB]">
-        <h3 style={{ fontSize: 22, fontWeight: 500, color: "#222222" }} className="mb-5">
+      {description.length > 2 && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="mt-4 flex items-center gap-1 font-semibold underline text-[#222222] hover:text-black transition-colors"
+          style={{ fontSize: 16 }}
+        >
+          {expanded ? "Show less" : "Show more"} &gt;
+        </button>
+      )}
+
+      {/* Sleeping arrangements */}
+      <div className="mt-8 pt-8 border-t border-[#EBEBEB]">
+        <h3 className="text-[22px] font-semibold text-[#222222] mb-6">
           Where you&apos;ll sleep
         </h3>
         {/* gap: 16px, card photo radius 12px, clean borders */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {sleepingArrangements.map((room, i) => (
-            <div key={i} className="group">
+            <div
+              key={i}
+              onClick={() =>
+                onOpenPhotoTour?.(
+                  room.roomName.toLowerCase().includes("bed")
+                    ? "bedroom"
+                    : "living-room-2"
+                )
+              }
+              className="group cursor-pointer"
+            >
               {/* Photo: radius 12px, border 1px #ebebeb */}
               <div className="relative overflow-hidden bg-[#f3f3f3] rounded-xl border border-[#EBEBEB]" style={{ height: 200 }}>
                 <Image

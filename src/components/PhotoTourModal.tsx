@@ -10,6 +10,7 @@ interface PhotoTourModalProps {
   onClose: () => void;
   onSelectPhoto: (index: number) => void;
   photos?: Photo[];
+  initialTarget?: string | null;
 }
 
 interface TourRoom {
@@ -173,7 +174,9 @@ export const PhotoTourModal: React.FC<PhotoTourModalProps> = ({
   isOpen,
   onClose,
   onSelectPhoto,
+  initialTarget,
 }) => {
+  const modalRef = React.useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -189,6 +192,24 @@ export const PhotoTourModal: React.FC<PhotoTourModalProps> = ({
       document.body.style.overflow = "";
     };
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    if (initialTarget) {
+      const timer = setTimeout(() => {
+        const targetId = initialTarget.startsWith("tour-")
+          ? initialTarget
+          : `tour-${initialTarget}`;
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else if (modalRef.current) {
+      modalRef.current.scrollTop = 0;
+    }
+  }, [isOpen, initialTarget]);
 
   if (!isOpen) return null;
 
@@ -208,6 +229,7 @@ export const PhotoTourModal: React.FC<PhotoTourModalProps> = ({
 
   return (
     <div
+      ref={modalRef}
       role="dialog"
       aria-modal="true"
       aria-label="Photo tour"

@@ -23,6 +23,7 @@ import { Footer } from "@/components/Footer";
 
 export default function ListingPage() {
   const [isPhotoTourOpen, setIsPhotoTourOpen] = useState(false);
+  const [photoTourTarget, setPhotoTourTarget] = useState<string | null>(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -30,13 +31,23 @@ export default function ListingPage() {
 
   const calendarRef = useRef<HTMLDivElement>(null);
 
-  const handleOpenPhotoTour = (startIndex?: number) => {
-    if (typeof startIndex === "number") {
-      setLightboxIndex(startIndex);
-      setIsLightboxOpen(true);
+  const handleOpenPhotoTour = (target?: string | number) => {
+    if (typeof target === "string") {
+      setPhotoTourTarget(target);
+    } else if (typeof target === "number") {
+      // Map 5 hero photos to their corresponding rooms
+      const roomTargets = [
+        "living-room-2", // photo 0: Warm living room with wooden pergola seating
+        "living-room-2", // photo 1: Private Jacuzzi hot tub
+        "exterior",      // photo 2: Exterior view of Amor De Goa complex
+        "bedroom",       // photo 3: Cozy bedroom with ambient lighting
+        "living-room-2", // photo 4: Indoor atrium and living patio
+      ];
+      setPhotoTourTarget(roomTargets[target] || "living-room-1");
     } else {
-      setIsPhotoTourOpen(true);
+      setPhotoTourTarget(null);
     }
+    setIsPhotoTourOpen(true);
   };
 
   const handleDatesChange = (ci: Date | null, co: Date | null) => {
@@ -100,6 +111,7 @@ export default function ListingPage() {
               description={LISTING.description}
               sleepingArrangements={LISTING.sleepingArrangements}
               translationNotice={LISTING.translationNotice}
+              onOpenPhotoTour={handleOpenPhotoTour}
             />
             <AmenitiesSection amenities={LISTING.amenities} />
             <div ref={calendarRef}>
@@ -138,8 +150,12 @@ export default function ListingPage() {
       {/* Modals */}
       <PhotoTourModal
         isOpen={isPhotoTourOpen}
-        onClose={() => setIsPhotoTourOpen(false)}
+        onClose={() => {
+          setIsPhotoTourOpen(false);
+          setPhotoTourTarget(null);
+        }}
         photos={LISTING.photos}
+        initialTarget={photoTourTarget}
         onSelectPhoto={(idx) => { setLightboxIndex(idx); setIsLightboxOpen(true); }}
       />
       <LightboxModal
