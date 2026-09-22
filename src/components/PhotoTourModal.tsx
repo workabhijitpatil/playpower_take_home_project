@@ -320,14 +320,16 @@ export const PhotoTourModal: React.FC<PhotoTourModalProps> = ({
                 id={`tour-${room.id}`}
                 className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8 scroll-mt-16"
               >
-                {/* Left Column: Room Name & Amenities */}
+                {/* Left Column: Room Name & Amenities (Sticky until section ends) */}
                 <div className="lg:col-span-4 lg:pr-6">
-                  <h3 className="text-[22px] font-semibold text-[#222222] mb-2 leading-tight">
-                    {room.name}
-                  </h3>
-                  <p className="text-[14px] text-[#717171] leading-relaxed">
-                    {room.amenities}
-                  </p>
+                  <div className="sticky top-20">
+                    <h3 className="text-[22px] font-semibold text-[#222222] mb-2 leading-tight">
+                      {room.name}
+                    </h3>
+                    <p className="text-[14px] text-[#717171] leading-relaxed">
+                      {room.amenities}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Right Column: Photos for this room in sequential rows */}
